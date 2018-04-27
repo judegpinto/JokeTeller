@@ -1,4 +1,4 @@
-#This project is a Udacity Android Project
+# This project is a Udacity Android Project
 
 # Gradle for Android and Java Final Project
 
