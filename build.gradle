@@ -12,14 +12,25 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+task startLocalServer {
+    dependsOn ':backend:appengineStart'
+}
+
+task stopLocalServer {
+    dependsOn ':backend:appengineStop'
+}
+
+task runAndroidTests {
+    dependsOn ':app:connectedCheck'
+}
 
 task endToEnd {
-    dependsOn ':backend:appengineStart'
-    dependsOn ':app:connectedCheck'
-    dependsOn ':backend:appengineStop'
+    dependsOn 'startLocalServer'
+    dependsOn 'stopLocalServer'
+    dependsOn 'runAndroidTests'
 
-    tasks.findByPath(':backend:appengineStart').finalizedBy ':app:connectedCheck'
-    tasks.findByPath(':backend:appengineStop').mustRunAfter ':app:connectedCheck'
+    tasks.findByName('startLocalServer').finalizedBy 'runAndroidTests'
+    tasks.findByName('stopLocalServer').mustRunAfter 'runAndroidTests'
 }
 
 allprojects {
